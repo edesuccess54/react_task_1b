@@ -5,6 +5,8 @@ import SnackBar from "./components/SnackBar";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import { ToastContainer } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 function renderRoutes(role) {
   switch (role) {
@@ -21,6 +23,7 @@ function renderRoutes(role) {
     default:
       return (
         <Routes>
+           <Route  path="/" element={<AdminLoginPage />}></Route>
           <Route exact path="/admin/login" element={<AdminLoginPage />}></Route>
           <Route path="*" exact element={<NotFoundPage />}></Route>
         </Routes>
@@ -44,6 +47,7 @@ function Main() {
         </div>
       </div>
       <SnackBar />
+      <ToastContainer />
     </div>
   );
 }

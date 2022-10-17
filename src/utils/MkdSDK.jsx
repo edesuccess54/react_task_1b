@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 export default function MkdSDK() {
   this._baseurl = "https://reacttask.mkdlabs.com";
   this._project_id = "reacttask";
@@ -13,8 +15,38 @@ export default function MkdSDK() {
     this._table = table;
   };
   
-  this.login = async function (email, password, role) {
+  this.login = async function (email, password, role, dispatch) {
     //TODO
+    try {
+      const res = await fetch("https://reacttask.mkdlabs.com/v2/api/lambda/login", {
+        method: "POST",
+        headers:{
+          "content-type": "application/json",
+          "x-project": "cmVhY3R0YXNrOjVmY2h4bjVtOGhibzZqY3hpcTN4ZGRvZm9kb2Fjc2t5ZQ=="
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          role: role
+        })
+      })
+
+      if (res.status != 200) { 
+        throw new Error("login failed")
+      }
+
+      const users = await res.json()
+
+      if(users) {
+        dispatch({ type: "LOGIN", payload: users})
+        toast.success("Login successful")
+      } else {
+        throw new Error(jsonPaginate.message);
+      }
+
+    } catch (error) {
+      toast.error(error.message)
+    }
   };
 
   this.getHeader = function () {
@@ -88,6 +120,28 @@ export default function MkdSDK() {
 
   this.check = async function (role) {
     //TODO
+    try {
+      const response = await fetch("https://reacttask.mkdlabs.com/v2/api/lambda/check", {
+        method: "POST",
+        headers: {
+          "content-type":"application/json",
+          "x-project": "cmVhY3R0YXNrOjVmY2h4bjVtOGhibzZqY3hpcTN4ZGRvZm9kb2Fjc2t5ZQ=="
+        },
+        body: JSON.stringify({
+          role: role,
+        })
+      })  
+      
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const data = await response.json()
+      console.log(data)
+
+    } catch (error) {
+      console.log(error.message)
+    }
   };
 
   return this;

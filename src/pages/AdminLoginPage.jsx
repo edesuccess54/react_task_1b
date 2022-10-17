@@ -5,6 +5,7 @@ import * as yup from "yup";
 import MkdSDK from "../utils/MkdSDK";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../authContext";
+import { toast } from 'react-toastify';
 
 const AdminLoginPage = () => {
   const schema = yup
@@ -28,6 +29,16 @@ const AdminLoginPage = () => {
   const onSubmit = async (data) => {
     let sdk = new MkdSDK();
     //TODO
+    try {
+      
+      await sdk.login(data.email, data.password, 'admin', dispatch)
+
+    } catch (error) {
+      toast.error(error.message)
+      console.log(error.message)
+    }
+   
+
   };
 
   return (
