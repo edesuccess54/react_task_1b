@@ -32,7 +32,7 @@ export default function MkdSDK() {
       })
 
       if (res.status != 200) { 
-        throw new Error("login failed")
+        throw new Error("invalid credentials")
       }
 
       const users = await res.json()
@@ -43,10 +43,12 @@ export default function MkdSDK() {
       } else {
         throw new Error(jsonPaginate.message);
       }
+      
 
     } catch (error) {
       toast.error(error.message)
     }
+    
   };
 
   this.getHeader = function () {
